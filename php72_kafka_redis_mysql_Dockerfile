@@ -1,0 +1,62 @@
+FROM php:7.2-fpm
+ENV WEBP_PATH=/usr/lib/lib-webp JPEG_PATH=/usr/lib/lib-jpeg
+ENV LIBDEPS_TOOLS automake autoconf libtool
+
+RUN  echo 'deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free \n \
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free \n \
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free \n \
+deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free \n' > /etc/apt/sources.list \
+&& apt-get update \
+    && apt-get install -fy \
+    $LIBDEPS_TOOLS \
+    librdkafka-dev \
+    libmcrypt-dev \
+    libxml2 \
+    libxml2-dev \
+    iputils-ping \
+    libwebp-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libfreetype6-dev \
+    librdkafka-dev \
+    procps \
+    vim \
+    gdb \
+    sox \
+    libsox-fmt-mp3 \
+    libwebp-dev \
+    libvips-dev \
+    libmagickwand-dev \
+    --no-install-recommends \
+&&  docker-php-ext-configure gd --with-webp-dir --with-freetype-dir --with-jpeg-dir &&  docker-php-ext-install -j$(nproc) gd \
+&&  docker-php-ext-install -j$(nproc) bcmath \
+&&  docker-php-ext-install -j$(nproc) calendar \
+&&  docker-php-ext-install -j$(nproc) dba \
+&&  docker-php-ext-install -j$(nproc) exif \
+&&  docker-php-ext-install -j$(nproc) gettext \
+&&  docker-php-ext-install -j$(nproc) mysqli \
+&&  docker-php-ext-install -j$(nproc) opcache \
+&&  docker-php-ext-install -j$(nproc) pdo_mysql \
+&&  docker-php-ext-install -j$(nproc) shmop \
+&&  docker-php-ext-install -j$(nproc) soap \
+&&  docker-php-ext-install -j$(nproc) sockets \
+&&  docker-php-ext-install -j$(nproc) sysvmsg \
+&&  docker-php-ext-install -j$(nproc) sysvsem \
+&&  docker-php-ext-install -j$(nproc) sysvshm \
+&&  docker-php-ext-install -j$(nproc) zip \
+&&  docker-php-ext-install -j$(nproc) pcntl \
+&&  pecl install redis \
+&&  pecl install rdkafka \
+&&  pecl install mcrypt-1.0.2 \
+&&  pecl install yac-2.0.2 \
+&&  pecl install imagick-3.4.4 \
+&&  pecl install vips \
+&&  sed -i 's|<policy domain="resource" name="height" value="16KP"/>|<policy domain="resource" name="height" value="60KP"/>|g' /etc/ImageMagick-6/policy.xml \
+&&  docker-php-ext-enable redis rdkafka mcrypt yac \
+&&  pecl clear-cache \
+&&  apt-get autoremove -y \
+&&  apt-get autoclean -y \
+&&  apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/php5 /etc/php/5* /usr/lib/php/20121212 /usr/lib/php/20131226 /var/log/*
+
+EXPOSE 9000
