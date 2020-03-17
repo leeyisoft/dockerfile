@@ -1,0 +1,22 @@
+FROM centos
+ENV RABBITMQ_C_VERSION=0.10.0 WEBP_PATH=/usr/lib/lib-webp JPEG_PATH=/usr/lib/lib-jpeg
+ENV LIBDEPS_TOOLS automake autoconf libtool
+
+RUN yum update -y \
+# for python3
+&& yum -y install zlib-devel bzip2-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel xz-devel libffi-devel gcc make bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel zlib zlib-devel libjpeg-turbo-devel curl patch mod_wsgi sqlite* readline-devel tk-devel tcl-devel openssl openssl-devel sqlite-devel  zlib-devel bzip2-devel ncurses-devel sqlite-devel readline-devel tk-devel autoconf wget git make gcc gcc-c++ kernel-devel m4 ncurses-devel openssl-devel perl gnuplot gd libpng zlib \
+&& wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz \
+&& tar xzf Python-3.8.1.tgz && cd Python-3.8.1 \
+&& ./configure --enable-loadable-sqlite-extensions --prefix=/usr/local/python3.8 \
+&& make && make install && cd ../ && rm -rf Python-3.8.1* \
+&& ln -s /usr/local/python3.8/bin/python3 /usr/local/bin/python && ln -s /usr/local/python3.8/bin/pip3 /usr/local/bin/pip \
+&& pip install websocket_client && pip install locustio \
+&& git clone https://github.com/giltene/wrk2.git && cd wrk2 && make all && cp wrk /usr/local/bin && cd ../ && rm -rf wrk2 \
+&& wget https://www.lua.org/ftp/lua-5.3.5.tar.gz && tar xzf lua-5.3.5.tar.gz && cd lua-5.3.5 && make linux && make install && cp src/lua /usr/bin/ && cd /root \
+&& wget https://www.kyne.com.au/~mark/software/download/lua-cjson-2.1.0.tar.gz && tar xzf lua-cjson-2.1.0.tar.gz && cd lua-cjson-2.1.0 && make PREFIX=/root/lua-5.3.5 && mkdir -p /usr/local/lib/lua/5.3 && cp cjson.so /usr/local/lib/lua/5.3 && chmod 755 /usr/local/lib/lua/5.3/cjson.so && cd /root && rm -rf lua-5.3.5* && rm -rf lua-cjson-2.1.0* \
+&& cd /root/ && git clone https://gitee.com/mirrors/otp.git && cd otp \
+&& git checkout OTP-22.2.8 && ./otp_build autoconf && ./configure && make all && make install \
+&& cd /root/ && wget http://tsung.erlang-projects.org/dist/tsung-1.7.0.tar.gz && tar -zxvf tsung-1.7.0.tar.gz && cd tsung-1.7.0 && ./configure && make all && make install \
+&& cd /root/ && wget http://cpan.org/modules/by-module/Template/Template-Toolkit-2.26.tar.gz && tar -zxvf Template-Toolkit-2.26.tar.gz && cd Template-Toolkit-2.26/ && perl Makefile.PL && make all && make install \
+&& mkdir -p /root/.tsung && cd /root/ && rm -rf otp* Template-Toolkit-2.26* tsung-1.7.0*
+EXPOSE 8089
