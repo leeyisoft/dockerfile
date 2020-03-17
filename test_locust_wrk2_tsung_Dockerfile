@@ -1,6 +1,4 @@
 FROM centos
-ENV RABBITMQ_C_VERSION=0.10.0 WEBP_PATH=/usr/lib/lib-webp JPEG_PATH=/usr/lib/lib-jpeg
-ENV LIBDEPS_TOOLS automake autoconf libtool
 
 RUN yum update -y \
 # for python3
