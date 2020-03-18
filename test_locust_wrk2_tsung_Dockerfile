@@ -16,5 +16,6 @@ RUN yum update -y \
 && git checkout OTP-22.2.8 && ./otp_build autoconf && ./configure && make all && make install \
 && cd /root/ && wget http://tsung.erlang-projects.org/dist/tsung-1.7.0.tar.gz && tar -zxvf tsung-1.7.0.tar.gz && cd tsung-1.7.0 && ./configure && make all && make install \
 && cd /root/ && wget http://cpan.org/modules/by-module/Template/Template-Toolkit-2.26.tar.gz && tar -zxvf Template-Toolkit-2.26.tar.gz && cd Template-Toolkit-2.26/ && perl Makefile.PL && make all && make install \
-&& mkdir -p /root/.tsung && cd /root/ && rm -rf otp* Template-Toolkit-2.26* tsung-1.7.0*
+&& mkdir -p /root/.tsung && cd /root/ && rm -rf otp* Template-Toolkit-2.26* tsung-1.7.0* \
+&& ln -s /usr/local/python3.8/bin/locust /usr/bin/locust && alias ll="ls -l"
 EXPOSE 8089
