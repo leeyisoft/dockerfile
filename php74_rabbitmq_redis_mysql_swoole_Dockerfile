@@ -2,11 +2,7 @@ FROM php:7.4-fpm
 ENV WEBP_PATH=/usr/lib/lib-webp JPEG_PATH=/usr/lib/lib-jpeg
 ENV LIBDEPS_TOOLS automake autoconf libtool
 
-RUN  echo 'deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free \n \
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free \n \
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free \n \
-deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free \n' > /etc/apt/sources.list \
-&& pecl channel-update pecl.php.net \
+RUN pecl channel-update pecl.php.net \
 && apt-get update \
     && apt-get install -fy \
     $LIBDEPS_TOOLS \
@@ -51,10 +47,10 @@ deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main con
 &&  docker-php-ext-install -j$(nproc) pcntl \
 &&  pecl install amqp \
 &&  pecl install redis \
-&&  pecl install swoole-4.4.15 \
-&&  pecl install mcrypt-1.0.3 \
-&&  pecl install yac-2.0.3 \
-&&  pecl install imagick-3.4.4 \
+&&  pecl install swoole-4.8.13 \
+&&  pecl install mcrypt-1.0.7 \
+&&  pecl install yac-2.3.1 \
+&&  pecl install imagick-3.7.0 \
 &&  pecl install vips \
 &&  sed -i 's|<policy domain="resource" name="height" value="16KP"/>|<policy domain="resource" name="height" value="60KP"/>|g' /etc/ImageMagick-6/policy.xml \
 &&  docker-php-ext-enable redis swoole amqp mcrypt yac imagick \
