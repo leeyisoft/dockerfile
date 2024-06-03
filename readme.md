@@ -26,8 +26,8 @@ docker push leeyi/php74-rabbitmq-redis-mysql-swoole:1.3
 
 ##
 ```
-docker build -f ./rabbitmq3_Dockerfile -t rabbitmq3:1.1 .
+docker build -f ./rabbitmq3_Dockerfile -t rabbitmq3:1.3 .
 docker login
-docker tag rabbitmq3:1.1 leeyi/rabbitmq3:1.1
-docker push leeyi/rabbitmq3:1.1
+docker tag rabbitmq3:1.3 leeyi/rabbitmq3:1.3
+docker push leeyi/rabbitmq3:1.3
 ```

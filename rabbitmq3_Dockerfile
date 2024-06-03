@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y wget unzip \
     && rabbitmq-plugins enable --offline rabbitmq_management \
     && rabbitmq-plugins enable --offline rabbitmq_management_agent \
     && rabbitmq-plugins enable --offline rabbitmq_prometheus \
-    && rabbitmq-plugins enable --offline rabbitmq_web_dispatch \
-    && rm -rf /opt/rabbitmq/plugins/rabbitmq_delayed_message_exchange-3.13.0.ez
+    && rabbitmq-plugins enable --offline rabbitmq_web_dispatch
 
 EXPOSE 5672 15672
